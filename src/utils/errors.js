@@ -1,11 +1,11 @@
-const errorMessages = {
+const error = {
     ["UnexpectedError"]: "An unexpected error occurred.",
     ["ValidationError"]: "The data you sent is not valid.",
 }
 
 module.exports = {
-    errorMessages,
-    errorType: [
+    error,
+    errorTypes: [
         "UnexpectedError",
         "ValidationError"
     ],
