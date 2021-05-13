@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  proxy:
+    image: nginx:latest
+    container_name: proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf
+    restart: "unless-stopped"
+  express:
+    build:
+      context: ./
+    container_name: express
+    restart: "unless-stopped"
