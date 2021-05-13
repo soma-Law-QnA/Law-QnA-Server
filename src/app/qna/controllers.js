@@ -8,9 +8,9 @@ const RecommandURLPrefix = 'https://www.law.go.kr/LSW/unSc.do?query=';
 const makeRecommandURL = (source) => {
     const words = source.split(' ');
     let url = "";
-    for(let word of words) {
+    for (let word of words) {
         url += word;
-        if(word.includes("법")){
+        if (word.includes("법")) {
             break;
         }
     }
@@ -47,14 +47,14 @@ const getQnA = async (req, res) => {
                 });
             }
             // console.log(body);
-            
-            let result = JSON.parse(body);
-            if(result.return_object) {
-                for(let item of result.return_object.LegalInfo.AnswerInfo) {
+
+            const result = JSON.parse(body);
+            if (result.return_object) {
+                for (const item of result.return_object.LegalInfo.AnswerInfo) {
                     item.recommandURL = makeRecommandURL(item.source);
                 }
             }
-            
+
             res.json(result);
         }
     );
