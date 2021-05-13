@@ -3,6 +3,20 @@ const request = require('request');
 const openApiURL = 'http://aiopen.etri.re.kr:8000/LegalQA';
 const access_key = process.env.KEY;
 
+const RecommandURLPrefix = 'https://www.law.go.kr/LSW/unSc.do?query=';
+
+const makeRecommandURL = (source) => {
+    const words = source.split(' ');
+    let url = "";
+    for(let word of words) {
+        url += word;
+        if(word.includes("법")){
+            break;
+        }
+    }
+    return RecommandURLPrefix + url;
+};
+
 const getQnA = async (req, res) => {
     const question = req.query.question;
 
@@ -32,8 +46,16 @@ const getQnA = async (req, res) => {
                     result: 1,
                 });
             }
-
-            res.json(JSON.parse(body));
+            // console.log(body);
+            
+            let result = JSON.parse(body);
+            if(result.return_object) {
+                for(let item of result.return_object.LegalInfo.AnswerInfo) {
+                    item.recommandURL = makeRecommandURL(item.source);
+                }
+            }
+            
+            res.json(result);
         }
     );
 }

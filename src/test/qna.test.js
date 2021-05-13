@@ -14,6 +14,18 @@ describe("QnA API Test", () => {
         // console.log(response.body.return_object.LegalInfo);
         assert.strictEqual(response.body.result, 0 , '성공시, result는 0이다.');
         assert(response.body.return_object.LegalInfo.AnswerInfo.length <= 5, '법률 정보가 5개 이하로 온다.');
+    }).timeout(5000);
+    it("Normal Request Recommand", async () => {  
+        const response = await request(app)
+            .get('/qna')
+            .query({ question: '대법원장의 임기는 몇년인가?' })
+            .expect(200)
+        
+        // assert.strictEqual(response.body.result, 0 , '성공시, result는 0이다.');
+        for(let item of response.body.return_object.LegalInfo.AnswerInfo) {
+            assert(!!item.recommandURL, 'recommandURL이 유효한 값을 가진다.')
+            // console.log(item.recommandURL);
+        }
     }).timeout(5000); 
     it("Empty Query Request", async () => {  
         const response = await request(app)
