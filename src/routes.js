@@ -1,5 +1,6 @@
 const router = require("express").Router()
 const errors = require("utils/errors")
+const qna = require("app/qna/routes")
 
 router.get("/custom-errors", (req, res) => {
     res.json({
@@ -7,5 +8,7 @@ router.get("/custom-errors", (req, res) => {
         errorMessages: errors.errorMessages
     })
 })
+
+router.use("/qna", qna)
 
 module.exports = router
